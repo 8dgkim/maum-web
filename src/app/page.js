@@ -10,8 +10,14 @@ export default function ChatPage() {
   const messagesEndRef = useRef(null); // Create a ref for scrolling to the last message
 
   useEffect(() => {
+    // Determine WebSocket URL based on environment
+    const wsUrl =
+      process.env.NODE_ENV === "development"
+        ? process.env.NEXT_PUBLIC_WS_URL_DEV
+        : process.env.NEXT_PUBLIC_WS_URL_PROD;
+
     // Initialize WebSocket connection
-    const ws = new WebSocket("ws://localhost:8000/ws"); // Update with your server URL
+    const ws = new WebSocket(wsUrl);
     setSocket(ws);
 
     ws.onmessage = (event) => {
